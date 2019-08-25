@@ -138,7 +138,7 @@ int main() {
   kernel = LinuxParser::Kernel();
   std::cout << "this is the kernel" << "\n";
   std::cout << kernel;
-  std::cout << "this is the uptime of the system"
+  std::cout << "this is the uptime of the system";
   std::cout << time;
   return 0;
 }
