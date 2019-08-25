@@ -71,7 +71,13 @@ vector<int> LinuxParser::Pids() {
 }
 
 // TODO: Read and return the system memory utilization
-float LinuxParser::MemoryUtilization() { return 0.0; }
+float LinuxParser::MemoryUtilization() {
+   // ToDo: tommorrow 26.8  start here 
+   // read suggest utlaition get data
+   // then figure out what to do with it.
+   return 0.0; 
+   
+   }
 
 // TODO: Read and return the system uptime
 long LinuxParser::UpTime() { 
