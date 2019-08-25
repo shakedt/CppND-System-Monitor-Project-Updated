@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include "format.h"
 #include "linux_parser.h"
 #include <iostream>
 
@@ -76,16 +77,20 @@ float LinuxParser::MemoryUtilization() { return 0.0; }
 long LinuxParser::UpTime() { 
   std::ifstream myFile;
   std:string line;
-  long int uptime;
-  myFile.open("/proc/uptime");
+  std::string uptime;
+  myFile.open(kProcDirectory + kUpTime);
   std::string content;
   if(myFile.is_open()) {
     while(std::getline(myFile, line)) {
       std::istringstream stream(line);
       stream >> uptime;
+      std::cout << "uptime is: " << uptime << "\n";
     }
   }
-  return uptime; 
+  long int uptimeLongInt = std::stoi(uptime);
+  // toDo: test design and check if linux parser uptime really need to retunr long int or just a parsed string
+  // might just be easier.
+  return uptimeLongInt; 
 }
 
 // TODO: Read and return the number of jiffies for the system
