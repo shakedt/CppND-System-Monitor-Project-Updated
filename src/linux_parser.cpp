@@ -6,6 +6,7 @@
 #include "format.h"
 #include "linux_parser.h"
 #include <iostream>
+#include <vector>
 
 using std::stof;
 using std::string;
@@ -72,11 +73,36 @@ vector<int> LinuxParser::Pids() {
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() {
-   // ToDo: tommorrow 26.8  start here 
-   // read suggest utlaition get data
-   // then figure out what to do with it.
-   return 0.0; 
+   /** for now implementation will send back total used memory
+    re review https://stackoverflow.com/questions/41224738/how-to-calculate-system-memory-usage-from-proc-meminfo-like-htop/41251290#41251290
+    for further information and calculation input
+   **/
+   std::ifstream myFile;
+   std::string line,sectionHeader, capcityOfMemory, memoryData, content;
+   std::string memTotal("MemTotal:"), memFree("MemFree:");
+   std::vector<double> dataVector;
+   double amountOfMemory(0);
+
+   myFile.open(kProcDirectory + kMeminfoFilename);
+   if (myFile.is_open()) {
+      while(std::getline(myFile, line)) {
+        std::istringstream stream(line);
+        stream >> sectionHeader >>  memoryData >> capcityOfMemory;
+        // right now this type of writing will assume that the first one is memTotal
+        // and the second is memfree consider a structure for saving them or a better way to implement it
+        // std::cout << sectionHeader << "\n";
+        if(sectionHeader == memTotal || sectionHeader == memFree) {
+          dataVector.push_back(std::stod(memoryData));
+        }
+        // create new if that checks if both strings are kb or same value of storage
+      }     
+   }
    
+   if(dataVector.size() == 2) {
+     amountOfMemory = dataVector[0] - dataVector[1];
+   }
+
+   return amountOfMemory; 
    }
 
 // TODO: Read and return the system uptime
@@ -144,12 +170,7 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
 
 int main() {
-  long int time = LinuxParser::UpTime();
-  std::string kernel;
-  kernel = LinuxParser::Kernel();
-  std::cout << "this is the kernel" << "\n";
-  std::cout << kernel;
-  std::cout << "this is the uptime of the system";
-  std::cout << time;
+  std::cout <<  LinuxParser::MemoryUtilization();
+  
   return 0;
 }
