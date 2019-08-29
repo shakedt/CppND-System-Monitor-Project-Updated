@@ -81,7 +81,7 @@ float LinuxParser::MemoryUtilization() {
    std::string line,sectionHeader, capcityOfMemory, memoryData, content;
    std::string memTotal("MemTotal:"), memFree("MemFree:");
    std::vector<double> dataVector;
-   double amountOfMemory(0);
+   float totalMemory(0), freeMemory(0), amountOfMemory(0);
 
    myFile.open(kProcDirectory + kMeminfoFilename);
    if (myFile.is_open()) {
@@ -91,17 +91,19 @@ float LinuxParser::MemoryUtilization() {
         // right now this type of writing will assume that the first one is memTotal
         // and the second is memfree consider a structure for saving them or a better way to implement it
         // std::cout << sectionHeader << "\n";
-        if(sectionHeader == memTotal || sectionHeader == memFree) {
-          dataVector.push_back(std::stod(memoryData));
-        }
+          std::istringstream convert(memoryData);
+          if(sectionHeader == memTotal) {
+            convert >> totalMemory;
+          } 
+          
+          if(sectionHeader == memFree) {
+            convert >> freeMemory;
+          }
         // create new if that checks if both strings are kb or same value of storage
       }     
    }
-   
-   if(dataVector.size() == 2) {
-     amountOfMemory = dataVector[0] - dataVector[1];
-   }
 
+   amountOfMemory = totalMemory - freeMemory;
    return amountOfMemory; 
    }
 
@@ -170,7 +172,7 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
 
 int main() {
-  std::cout <<  LinuxParser::MemoryUtilization();
-  
+  std::cout <<  LinuxParser::MemoryUtilization() << "\n";
+  std::cout << typeid(2013424).name() << "\n";
   return 0;
 }
