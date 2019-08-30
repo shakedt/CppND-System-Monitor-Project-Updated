@@ -88,9 +88,6 @@ float LinuxParser::MemoryUtilization() {
       while(std::getline(myFile, line)) {
         std::istringstream stream(line);
         stream >> sectionHeader >>  memoryData >> capcityOfMemory;
-        // right now this type of writing will assume that the first one is memTotal
-        // and the second is memfree consider a structure for saving them or a better way to implement it
-        // std::cout << sectionHeader << "\n";
           std::istringstream convert(memoryData);
           if(sectionHeader == memTotal) {
             convert >> totalMemory;
@@ -99,7 +96,6 @@ float LinuxParser::MemoryUtilization() {
           if(sectionHeader == memFree) {
             convert >> freeMemory;
           }
-        // create new if that checks if both strings are kb or same value of storage
       }     
    }
 
@@ -113,7 +109,7 @@ long LinuxParser::UpTime() {
   std:string line;
   std::string uptime;
   myFile.open(kProcDirectory + kUpTime);
-  std::string content;
+
   if(myFile.is_open()) {
     while(std::getline(myFile, line)) {
       std::istringstream stream(line);
@@ -144,7 +140,24 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() {
+  std::ifstream myFile;
+  std::string line, proccesses, proccessesNumber;
+  std:string totalProcessesName = "processes";
+  int totalProccessNumber;
+  myFile.open(kProcDirectory + kStatFilename);
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line)) {
+       std::istringstream stream(line);
+       stream >> proccesses >> proccessesNumber;
+       if(proccesses == totalProcessesName) {
+        totalProccessNumber = std::stoi(proccessesNumber, nullptr, 0); 
+       }
+    }
+  }
+
+  return totalProccessNumber; 
+}
 
 // TODO: Read and return the number of running processes
 int LinuxParser::RunningProcesses() { return 0; }
@@ -172,7 +185,7 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
 
 int main() {
-  std::cout <<  LinuxParser::MemoryUtilization() << "\n";
-  std::cout << typeid(2013424).name() << "\n";
+  std::cout <<  LinuxParser::TotalProcesses();
+
   return 0;
 }
