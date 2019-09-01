@@ -139,7 +139,7 @@ long LinuxParser::IdleJiffies() { return 0; }
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
-// TODO: Read and return the total number of processes
+// Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
   std::ifstream myFile;
   std::string line, proccesses, proccessesNumber;
@@ -159,7 +159,7 @@ int LinuxParser::TotalProcesses() {
   return totalProccessNumber; 
 }
 
-// TODO: Read and return the number of running processes
+// Read and return the number of running processes
 int LinuxParser::RunningProcesses() { 
   std::ifstream myFile;
   std::string line, proccesses, proccessesNumber;
@@ -194,7 +194,28 @@ string LinuxParser::Ram(int pid[[maybe_unused]]) {
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid) { 
+  std::ifstream myFile;
+  std::string line, userIdString, userIdNumber;
+  std::string returnUserIdValue = "Nothing Found";
+  const std::string userId = "Uid:";
+  
+  myFile.open(kProcDirectory + std::to_string(pid) + kStatusFilename);
+  
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line)) {
+      std::istringstream stream(line);
+
+      stream >> userIdString >> userIdNumber;
+
+      if(userId == userIdString) {
+       returnUserIdValue = userIdNumber; 
+      }
+    }
+  }
+  
+  return returnUserIdValue; 
+}
 
 // TODO: Read and return the user associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
@@ -205,7 +226,7 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
 
 int main() {
-  std::cout << LinuxParser::RunningProcesses();
+  std::cout << LinuxParser::Uid(1859); 
 
   return 0;
 }
