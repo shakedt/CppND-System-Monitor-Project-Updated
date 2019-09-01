@@ -13,7 +13,6 @@ std::string Format::ElapsedTime(long timeInSeconds) {
     std::string minutesString = std::to_string(minutes);
     std::string secondsString = std::to_string(seconds);
     std::string finalTimeOutput = hoursString + ":" + minutesString + ":" + secondsString; 
-    std::cout << finalTimeOutput << "\n" << "shmolick\n";
 
     return finalTimeOutput; 
 }
