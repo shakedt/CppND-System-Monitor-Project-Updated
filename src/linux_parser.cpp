@@ -276,8 +276,7 @@ string LinuxParser::User(int pid) {
   return userNameToReturn;
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
+// Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
   std::ifstream myFile;
   std::string line, data;
