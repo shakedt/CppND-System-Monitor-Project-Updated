@@ -138,7 +138,27 @@ long LinuxParser::ActiveJiffies() { return 0; }
 long LinuxParser::IdleJiffies() { return 0; }
 
 // TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+vector<string> LinuxParser::CpuUtilization() { 
+  // ToDo: change calc to correctly calculate real time utilzation and not all time calc
+  std::ifstream myFile;
+  std::string line, cpuAllTimeUsage, data;
+  const std::string cpu = "cpu";
+  std::vector<string> cpuUtilization;
+  myFile.open(kProcDirectory + kStatFilename);
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line)) {
+     std::istringstream stream(line);
+
+     stream >> cpuAllTimeUsage;
+     if(cpuAllTimeUsage == cpu) {
+       while(stream >> data) {
+        cpuUtilization.push_back(data);
+       }
+     } 
+    }
+  }
+  return cpuUtilization;
+}
 
 // Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
@@ -303,6 +323,7 @@ long LinuxParser::UpTime(int pid) {
 }
 
 int main() {
-  std::cout << LinuxParser::UpTime(1859) << "\n"; 
+  std::cout << "cpu utiliazition is: " << "\n";
+  std::cout << LinuxParser::CpuUtilization()[0] << "\n";
   return 0;
 }
