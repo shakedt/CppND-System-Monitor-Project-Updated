@@ -104,7 +104,7 @@ float LinuxParser::MemoryUtilization() {
    return amountOfMemory; 
    }
 
-// TODO: Read and return the system uptime
+// Read and return the system uptime
 long LinuxParser::UpTime() { 
   std::ifstream myFile;
   std:string line;
@@ -129,7 +129,28 @@ long LinuxParser::Jiffies() { return 0; }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::ActiveJiffies(int pid) { 
+  std::ifstream myFile;
+  std::string line;
+  std::string time;
+  const int utimeLocation(14), stimeLocation(15);
+  int counter(0), sum = 0;
+
+  myFile.open(kProcDirectory + std::to_string(pid) + kStatFilename);
+
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line)) {
+      std::istringstream stream(line);
+      while(stream >> time) {
+        if(counter == utimeLocation || counter == stimeLocation) {
+         sum += std::stoi(time) / sysconf(_SC_CLK_TCK);
+        }
+        counter++;        
+      } 
+    }    
+  }
+  return sum;
+}
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { return 0; }
@@ -137,7 +158,7 @@ long LinuxParser::ActiveJiffies() { return 0; }
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { return 0; }
 
-// TODO: Read and return CPU utilization
+// Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
   // ToDo: change calc to correctly calculate real time utilzation and not all time calc
   std::ifstream myFile;
@@ -324,6 +345,6 @@ long LinuxParser::UpTime(int pid) {
 
 int main() {
   std::cout << "cpu utiliazition is: " << "\n";
-  std::cout << LinuxParser::CpuUtilization()[0] << "\n";
+  std::cout << LinuxParser::ActiveJiffies(2637) << "\n";
   return 0;
 }
