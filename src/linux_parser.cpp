@@ -183,7 +183,7 @@ long LinuxParser::ActiveJiffies() {
   if(myFile.is_open()) {
     while(std::getline(myFile, line)) {
       std::istringstream stream(line);
-      
+      std::cout << "again ";      
       stream >> data;
       if(data == cpuName) { 
         stream >> totalCpuTime;
@@ -196,8 +196,27 @@ long LinuxParser::ActiveJiffies() {
   return activeTime;
 }
 
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+// Read and return the number of idle jiffies for the system
+long LinuxParser::IdleJiffies() {
+  std::ifstream myFile;
+  std::string line, idleJiffies;
+  std::string cpuName = "cpu";
+  int idleCpuTime(0); // aka jiffiys
+  myFile.open(kProcDirectory + kStatFilename);
+
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line))  {
+      std::istringstream stream(line);
+
+      stream >> idleJiffies;
+      if(idleJiffies == cpuName) {
+        stream >> idleJiffies >> idleJiffies >> idleJiffies >> idleJiffies;
+        idleCpuTime = std::stoi(idleJiffies);
+      }
+    }
+  }
+  return idleCpuTime;
+}
 
 // Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
@@ -382,10 +401,4 @@ long LinuxParser::UpTime(int pid) {
   timeToSeconds = std::stoi(data) / sysconf(_SC_CLK_TCK);
   
   return timeToSeconds; 
-}
-
-int main() {
-  std::cout << "cpu utiliazition is: " << "\n";
-  std::cout << LinuxParser::ActiveJiffies() << "\n";
-  return 0;
 }
