@@ -27,7 +27,7 @@ string Process::Command() {
 }
 
 // Return this process's memory utilization
-string Process::Ram() { 
+string Process::Ram() const { 
     return LinuxParser::Ram(pid);
 }
 
@@ -43,6 +43,6 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Pocess robjects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process & a)  {
+bool Process::operator<(Process const& a) const {
     return std::stoi(this->Ram()) > std::stoi(a.Ram());
 }
