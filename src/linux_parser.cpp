@@ -130,7 +130,7 @@ long LinuxParser::Jiffies() {
   std::string line, data, cpuData;
   int totalSystemTicsUsed = 0;
   const std::string cpu = "cpu";
-  
+  // ToDo: recheck logic is somthing wrong with the concept here ? do i need to split with sys conf item ? 
   myFile.open(kProcDirectory + kStatFilename);
   if(myFile.is_open()) {
     while(std::getline(myFile, line)) {
@@ -171,7 +171,30 @@ long LinuxParser::ActiveJiffies(int pid) {
 }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() {
+  std::ifstream myFile;
+  std::string line;
+  std::string data;
+  int totalCpuTime(0), idleCpuTime(0);
+  int activeTime(0);
+  const std::string cpuName;  
+  myFile.open(kProcDirectory + kStatFilename);
+
+  if(myFile.is_open()) {
+    while(std::getline(myFile, line)) {
+      std::istringstream stream(line);
+      
+      stream >> data;
+      if(data == cpuName) { 
+        stream >> totalCpuTime;
+        stream >> idleCpuTime >> idleCpuTime >> idleCpuTime;
+
+        activeTime = std::abs(totalCpuTime - idleCpuTime);
+      }
+    }
+  }
+  return activeTime;
+}
 
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { return 0; }
@@ -363,6 +386,6 @@ long LinuxParser::UpTime(int pid) {
 
 int main() {
   std::cout << "cpu utiliazition is: " << "\n";
-  std::cout << LinuxParser::Jiffies() << "\n";
+  std::cout << LinuxParser::ActiveJiffies() << "\n";
   return 0;
 }
