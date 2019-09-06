@@ -43,6 +43,6 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Pocess robjects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a) const {
+bool Process::operator<(Process & a)  {
     return std::stoi(this->Ram()) > std::stoi(a.Ram());
 }
