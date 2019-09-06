@@ -17,7 +17,9 @@ int Process::Pid() { return pid; }
 // TODO: Return this process's CPU utilization
 // need to do calculations here consider renamind vector to int function on linux parser
 // and do calcs there seems to make much more sens
-float Process::CpuUtilization() { return 0; }
+float Process::CpuUtilization() {
+    return  std::stoi(LinuxParser::CpuUtilization()[0]);
+}
 
 // Return the command that generated this process
 string Process::Command() { 
