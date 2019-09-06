@@ -107,7 +107,7 @@ float LinuxParser::MemoryUtilization() {
 // Read and return the system uptime
 long LinuxParser::UpTime() { 
   std::ifstream myFile;
-  std:string line;
+  std::string line;
   std::string uptime;
   myFile.open(kProcDirectory + kUpTime);
 
@@ -245,7 +245,7 @@ vector<string> LinuxParser::CpuUtilization() {
 int LinuxParser::TotalProcesses() {
   std::ifstream myFile;
   std::string line, proccesses, proccessesNumber;
-  std:string totalProcessesName = "processes";
+  std::string totalProcessesName = "processes";
   int totalProccessNumber;
   myFile.open(kProcDirectory + kStatFilename);
   if(myFile.is_open()) {

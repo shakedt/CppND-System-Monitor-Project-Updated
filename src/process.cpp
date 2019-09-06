@@ -5,7 +5,10 @@
 #include <vector>
 
 #include "process.h"
+#ifndef linuxParser
+#define linuxParser
 #include "linux_parser.h"
+#endif
 
 using std::string;
 using std::to_string;

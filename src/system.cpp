@@ -7,7 +7,6 @@
 #include "process.h"
 #include "processor.h"
 #include "system.h"
-#include "linux_parser.cpp"
 
 using std::set;
 using std::size_t;
