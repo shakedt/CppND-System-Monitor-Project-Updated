@@ -3,21 +3,36 @@
 #include <set>
 #include <string>
 #include <vector>
+#include<iostream>
 
 #include "process.h"
 #include "processor.h"
 #include "system.h"
-
+// start of  to be removed after function
+#include "linux_parser.h"
+// end of to be removed
 using std::set;
 using std::size_t;
 using std::string;
 using std::vector;
 
+using std::cout;
 // TODO: Return the system's CPU
-Processor& System::Cpu() { return cpu_; }
+Processor& System::Cpu() {
+  cpu_ = Processor(); 
+  return cpu_;
+}
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() { 
+  vector<int> pids = LinuxParser::Pids();
+  
+  for(int pid: pids) {
+    Process process(pid);
+    processes_[pid] = process;
+  }
+  return processes_; 
+}
 
 // Return the system's kernel identifier (string)
 std::string System::Kernel() {
@@ -36,7 +51,7 @@ std::string System::OperatingSystem() {
 
 // Return the number of processes actively running on the system
 int System::RunningProcesses() { 
-  return LinuxParser:: RunningProcesses();
+  return LinuxParser::RunningProcesses();
 }
 
 // Return the total number of processes on the system
