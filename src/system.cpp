@@ -5,12 +5,8 @@
 #include <vector>
 #include<iostream>
 
-#include "process.h"
-#include "processor.h"
 #include "system.h"
-// start of  to be removed after function
-#include "linux_parser.h"
-// end of to be removed
+
 using std::set;
 using std::size_t;
 using std::string;
@@ -46,20 +42,20 @@ float System::MemoryUtilization() {
 
 // Return the operating system name
 std::string System::OperatingSystem() {
-  return  LinuxParser::OperatingSystem();
+  return "shomlic"; // LinuxParser::OperatingSystem();
 }
 
 // Return the number of processes actively running on the system
 int System::RunningProcesses() { 
-  return LinuxParser::RunningProcesses();
+  return 5; // LinuxParser::RunningProcesses();
 }
 
 // Return the total number of processes on the system
 int System::TotalProcesses() {
-  return LinuxParser::TotalProcesses();
+  return 5; // LinuxParser::TotalProcesses();
 }
 
 // Return the number of seconds since the system started running
 long int System::UpTime() { 
-  return LinuxParser::UpTime(); 
+  return 5; // LinuxParser::UpTime(); 
 }
