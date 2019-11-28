@@ -25,7 +25,7 @@ vector<Process>& System::Processes() {
   
   for(int pid: pids) {
     Process process(pid);
-    processes_[pid] = process;
+    processes_.push_back(process);
   }
   return processes_; 
 }
@@ -42,20 +42,20 @@ float System::MemoryUtilization() {
 
 // Return the operating system name
 std::string System::OperatingSystem() {
-  return "shomlic"; // LinuxParser::OperatingSystem();
+  return LinuxParser::OperatingSystem();
 }
 
 // Return the number of processes actively running on the system
 int System::RunningProcesses() { 
-  return 5; // LinuxParser::RunningProcesses();
+  return LinuxParser::RunningProcesses();
 }
 
 // Return the total number of processes on the system
 int System::TotalProcesses() {
-  return 5; // LinuxParser::TotalProcesses();
+  return LinuxParser::TotalProcesses();
 }
 
 // Return the number of seconds since the system started running
 long int System::UpTime() { 
-  return 5; // LinuxParser::UpTime(); 
+  return LinuxParser::UpTime(); 
 }

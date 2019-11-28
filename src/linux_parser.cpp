@@ -100,7 +100,7 @@ float LinuxParser::MemoryUtilization() {
       }     
    }
 
-   amountOfMemory = 50; //(totalMemory - freeMemory)/ 1000;
+   amountOfMemory = (totalMemory - freeMemory) / 1000;
    return amountOfMemory; 
    }
 
