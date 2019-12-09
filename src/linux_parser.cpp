@@ -100,7 +100,7 @@ float LinuxParser::MemoryUtilization() {
       }     
    }
 
-   amountOfMemory = (totalMemory - freeMemory) / 1000;
+   amountOfMemory = (totalMemory - freeMemory) / totalMemory;
    return amountOfMemory; 
    }
 
@@ -115,7 +115,6 @@ long LinuxParser::UpTime() {
     while(std::getline(myFile, line)) {
       std::istringstream stream(line);
       stream >> uptime;
-      std::cout << "uptime is: " << uptime << "\n";
     }
   }
   long int uptimeLongInt = std::stoi(uptime);
